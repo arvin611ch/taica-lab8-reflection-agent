@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import json
 import os
+import sys
 import urllib.error
 import urllib.request
 from dataclasses import dataclass
@@ -35,6 +36,12 @@ class ChatModel:
             DEFAULT_GROQ_MODEL if self.api_key else DEFAULT_OLLAMA_MODEL
         )
         if not self.api_key:
+            if "google.colab" in sys.modules:
+                raise RuntimeError(
+                    "Colab 讀不到 Groq API 金鑰。請在左側 🔑 密鑰新增 Name=Groq，"
+                    "Value=Groq 官方網站建立的 API 金鑰，並打開這份筆記本的 Notebook access；"
+                    "之後重新執行本格。不要把金鑰貼在程式碼或聊天室。"
+                )
             try:
                 urllib.request.urlopen("http://127.0.0.1:11434/api/tags", timeout=2).close()
             except (urllib.error.URLError, TimeoutError) as exc:
