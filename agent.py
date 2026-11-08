@@ -30,7 +30,7 @@ class ChatModel:
     """優先用 Colab 的 Groq 金鑰；本機無金鑰時使用 Ollama。"""
 
     def __init__(self) -> None:
-        self.api_key = os.getenv("GROQ_API_KEY") or _colab_secret("Groq")
+        self.api_key = (os.getenv("GROQ_API_KEY") or _colab_secret("Groq") or "").strip()
         self.backend = "Groq" if self.api_key else "Ollama"
         self.model = os.getenv("LAB8_MODEL") or (
             DEFAULT_GROQ_MODEL if self.api_key else DEFAULT_OLLAMA_MODEL
@@ -60,7 +60,11 @@ class ChatModel:
                 "temperature": temperature,
                 "max_tokens": 900,
             }
-            headers = {"Authorization": f"Bearer {self.api_key}"}
+            # Groq 前端會擋掉 urllib 預設的 Python-urllib User-Agent（403/1010）。
+            headers = {
+                "Authorization": f"Bearer {self.api_key}",
+                "User-Agent": "taica-lab8-reflection-agent/1.0",
+            }
         else:
             url = OLLAMA_URL
             payload = {

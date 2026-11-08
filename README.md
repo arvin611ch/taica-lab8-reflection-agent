@@ -20,6 +20,8 @@
 
 金鑰不會寫進 Notebook。Notebook 已包含 `agent.py` 與 `app.py` 的完整內容，不需要額外下載本專案檔案。Groq 的 [Chat Completions API](https://console.groq.com/docs/api-reference) 和模型 `openai/gpt-oss-120b` 均列於 [官方文件](https://console.groq.com/docs/models)。
 
+若看到 `HTTP 403: error code: 1010`，請重新開啟上方 Colab 連結以取得最新版 Notebook；這是舊版 HTTP 請求識別字被 Cloudflare 擋下，最新版已修正。若看到 `HTTP 401`，才需要檢查金鑰內容。
+
 ### 本機
 
 需要 Python 3.10+。如已安裝 Ollama 與 `qwen2.5:14b`，不用雲端金鑰：
