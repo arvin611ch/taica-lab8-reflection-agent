@@ -18,9 +18,9 @@
 2. 左側 **🔑 密鑰** 新增 `Groq`，填入自己的 Groq API 金鑰，並開啟「筆記本存取權」。
 3. 執行所有程式格；最後一格開啟 Gradio 網頁。
 
-金鑰不會寫進 Notebook。Notebook 已包含 `agent.py` 與 `app.py` 的完整內容，不需要額外下載本專案檔案。Groq 的 [Chat Completions API](https://console.groq.com/docs/api-reference) 和模型 `openai/gpt-oss-120b` 均列於 [官方文件](https://console.groq.com/docs/models)。
+金鑰不會寫進 Notebook。Notebook 已包含 `agent.py` 與 `app.py` 的完整內容，不需要額外下載本專案檔案。Groq 呼叫沿用課程 Lab 07 的 `aisuite` provider 寫法；[Chat Completions API](https://console.groq.com/docs/api-reference) 和模型 `openai/gpt-oss-120b` 均列於 [官方文件](https://console.groq.com/docs/models)。
 
-若看到 `HTTP 403: error code: 1010`，請重新開啟上方 Colab 連結以取得最新版 Notebook；這是舊版 HTTP 請求識別字被 Cloudflare 擋下，最新版已修正。若看到 `HTTP 401`，才需要檢查金鑰內容。
+若看到 `HTTP 403: error code: 1010`，請重新開啟上方 Colab 連結以取得最新版 Notebook；舊版直接用 `urllib` 呼叫 Groq 時曾被 Cloudflare 擋下，最新版改用 `aisuite`。若看到 `HTTP 401`，才需要檢查金鑰內容。
 
 ### 本機
 
@@ -28,7 +28,7 @@
 
 ```bash
 python -m venv .venv
-.venv/bin/pip install "gradio==6.30.0"
+.venv/bin/pip install "gradio==6.30.0" "aisuite[groq]==0.2.0" "groq==0.37.1"
 .venv/bin/python app.py
 ```
 

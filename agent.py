@@ -11,7 +11,6 @@ from dataclasses import dataclass
 from typing import Callable
 
 
-GROQ_URL = "https://api.groq.com/openai/v1/chat/completions"
 OLLAMA_URL = "http://127.0.0.1:11434/api/chat"
 DEFAULT_GROQ_MODEL = "openai/gpt-oss-120b"
 DEFAULT_OLLAMA_MODEL = "qwen2.5:14b"
@@ -53,31 +52,38 @@ class ChatModel:
     def complete(self, system: str, user: str, temperature: float = 0.3) -> str:
         messages = [{"role": "system", "content": system}, {"role": "user", "content": user}]
         if self.api_key:
-            url = GROQ_URL
-            payload = {
-                "model": self.model,
-                "messages": messages,
-                "temperature": temperature,
-                "max_tokens": 900,
-            }
-            # Groq 前端會擋掉 urllib 預設的 Python-urllib User-Agent（403/1010）。
-            headers = {
-                "Authorization": f"Bearer {self.api_key}",
-                "User-Agent": "taica-lab8-reflection-agent/1.0",
-            }
-        else:
-            url = OLLAMA_URL
-            payload = {
-                "model": self.model,
-                "messages": messages,
-                "stream": False,
-                "options": {"temperature": temperature, "num_predict": 900},
-            }
-            headers = {}
+            # 與課程 Lab 07 相同：用 aisuite 的 Groq provider 呼叫模型。
+            try:
+                import aisuite as ai
+            except ImportError as exc:
+                raise RuntimeError("缺少 aisuite；請先執行 Notebook 的安裝套件格。") from exc
+            try:
+                client = ai.Client(provider_configs={"groq": {"timeout": 90.0, "max_retries": 1}})
+                model_id = self.model if self.model.startswith("groq:") else f"groq:{self.model}"
+                response = client.chat.completions.create(
+                    model=model_id,
+                    messages=messages,
+                    temperature=temperature,
+                    max_tokens=900,
+                )
+                answer = response.choices[0].message.content
+            except Exception as exc:
+                detail = str(exc).replace(self.api_key, "[REDACTED]")[:300]
+                raise RuntimeError(f"Groq 呼叫失敗：{detail}") from exc
+            if not isinstance(answer, str) or not answer.strip():
+                raise RuntimeError("模型沒有回傳文字。")
+            return answer.strip()
+
+        payload = {
+            "model": self.model,
+            "messages": messages,
+            "stream": False,
+            "options": {"temperature": temperature, "num_predict": 900},
+        }
         request = urllib.request.Request(
-            url,
+            OLLAMA_URL,
             data=json.dumps(payload, ensure_ascii=False).encode("utf-8"),
-            headers={"Content-Type": "application/json", **headers},
+            headers={"Content-Type": "application/json"},
             method="POST",
         )
         try:
@@ -85,14 +91,10 @@ class ChatModel:
                 data = json.load(response)
         except urllib.error.HTTPError as exc:
             detail = exc.read().decode("utf-8", errors="replace")[:300]
-            raise RuntimeError(f"{self.backend} 呼叫失敗（HTTP {exc.code}）：{detail}") from exc
+            raise RuntimeError(f"Ollama 呼叫失敗（HTTP {exc.code}）：{detail}") from exc
         except (urllib.error.URLError, TimeoutError) as exc:
-            raise RuntimeError(f"{self.backend} 連線失敗：{exc}") from exc
-        answer = (
-            data["choices"][0]["message"]["content"]
-            if self.api_key
-            else data["message"]["content"]
-        )
+            raise RuntimeError(f"Ollama 連線失敗：{exc}") from exc
+        answer = data["message"]["content"]
         if not isinstance(answer, str) or not answer.strip():
             raise RuntimeError("模型沒有回傳文字。")
         return answer.strip()

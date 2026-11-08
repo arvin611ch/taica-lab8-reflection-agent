@@ -42,7 +42,7 @@ cells = [
     md("""## 2. 安裝與模型設定
 
 Colab 左側 **🔑 密鑰** 新增名稱 `Groq` 的金鑰，並開啟「筆記本存取權」。執行時不會印出金鑰。若在本機執行而沒有金鑰，程式會使用已啟動的 Ollama `qwen2.5:14b`。"""),
-    code('%pip install -q "gradio==6.30.0"\n'),
+    code('%pip install -q "gradio==6.30.0" "aisuite[groq]==0.2.0" "groq==0.37.1"\n'),
     md("""## 3. Agent 核心程式
 
 重點看 `run_reflection()`：`draft`、`critique`、`revised` 是三次不同的模型輸出；審稿意見確實送進第三次呼叫。`check_facts()` 顯示修訂前後的客觀欄位檢查。"""),
