@@ -11,9 +11,9 @@ https://colab.research.google.com/github/arvin611ch/taica-lab8-reflection-agent/
 
 **重點截圖：**
 
-- [Gradio 對話與查核表](screenshots/gradio_chat.png)
-- [完整畫面：初稿 → AI 反思 → 修訂稿](screenshots/gradio_full.png)
+- [Gradio 對話與查核表](https://raw.githubusercontent.com/arvin611ch/taica-lab8-reflection-agent/main/screenshots/gradio_chat.png)
+- [完整畫面：初稿 → AI 反思 → 修訂稿](https://raw.githubusercontent.com/arvin611ch/taica-lab8-reflection-agent/main/screenshots/gradio_full.png)
 
-**Gradio 對話結果：** 範例輸入「期中考後解壓桌遊夜／11/15（週日）18:30–21:00／圖書館 B1 討論室／免費」。實際執行後，畫面同時顯示初稿、審稿意見與完成公告；初稿把時間和地點改成不同寫法，審稿要求統一格式，修訂稿逐字保留原始值，四個必填欄位全部通過查核。完整文字另存於 [gradio_result.json](screenshots/gradio_result.json)。
+**Gradio 對話結果：** 範例輸入「期中考後解壓桌遊夜／11/15（週日）18:30–21:00／圖書館 B1 討論室／免費」。實際執行後，畫面同時顯示初稿、審稿意見與完成公告；初稿把時間和地點改成不同寫法，審稿要求統一格式，修訂稿逐字保留原始值，四個必填欄位全部通過查核。完整文字另存於 [gradio_result.json](https://github.com/arvin611ch/taica-lab8-reflection-agent/blob/main/screenshots/gradio_result.json)。
 
 **改良與測試：** 固定回覆測試刻意讓初稿漏時間、修訂稿漏費用，確認三階段流程與缺漏補齊都正常；本機實際模型與 Gradio 操作也已驗證。逐字查核無法驗證語意真偽，因此保留全部階段讓使用者人工檢視。
