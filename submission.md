@@ -3,7 +3,7 @@
 **繳交標題：** 陽明交大 113611097 百川 江晟維 活動公告檢查官（Reflection Agent）
 
 **Colab 連結（公開 GitHub Notebook，任何有連結者可開啟）：**  
-https://colab.research.google.com/github/arvin611ch/taica-lab8-reflection-agent/blob/0318e99c43186a7c32767a85810111263508d8c8/lab8_reflection_activity_agent.ipynb
+https://colab.research.google.com/github/arvin611ch/taica-lab8-reflection-agent/blob/main/lab8_reflection_activity_agent.ipynb
 
 **Agent 任務與類型：** 這是 Reflection Agent。使用者輸入活動名稱、時間、地點、費用和補充資訊，AI 協助寫出可發布的繁體中文活動公告。
 
